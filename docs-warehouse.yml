@@ -400,14 +400,6 @@ paths:
       summary: mitra mengedit profil mitra
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_mitra
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       requestBody:
         required: true
         content:
@@ -492,14 +484,6 @@ paths:
       summary: penitip mengedit profil penitip
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_mitra
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       requestBody:
         required: true
         content:
@@ -542,14 +526,6 @@ paths:
       summary: penitip menghapus akun penitip
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_mitra
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         "200":
           description: Success Delete
@@ -714,6 +690,14 @@ paths:
       summary: melihat list lahan pada salah satu gudang
       security:
         - JWTAuth: []
+      parameters:
+        - name: id
+          description: id_gudang
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
       responses:
         "200":
           description: Get List Lahan
@@ -943,14 +927,6 @@ paths:
       summary: penitip melihat produknya berada di lahan mana saja
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_lahan
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         "200":
           description: Get Detail Verified Mitra
@@ -1043,14 +1019,6 @@ paths:
       summary: penitip melihat daftar lahan pada halaman favorite
       security:
         - JWTAuth: []
-      parameters:
-        - name: id
-          description: id_mitra
-          in: path
-          schema:
-            type: integer
-            example: 1
-          required: true
       responses:
         "200":
           description: Get Detail Verified Mitra
@@ -1086,6 +1054,7 @@ paths:
                 response1:
                   description: response fail
                   value: { status: "failed", message: "get detail mitra fail" }
+  /favorite{id}:
     delete:
       tags:
         - Favorite
@@ -1174,6 +1143,53 @@ paths:
                   description: response fail
                   value: { status: "failed", message: "failed checkout lahan" }
 
+    ####################################
+    #  Tugas menambah endpoint
+    ####################################
+    get:
+      tags:
+        - Checkout
+      summary: penitip melihat history gudang yang pernah disewa
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          description: Success get history lahan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseSuccess"
+              examples:
+                response1:
+                  description: response success
+                  value:
+                    status: "success"
+                    message: "success get history lahan"
+                    data:
+                      {
+                        photo_lahan: "photo_lahan.jpg",
+                        lahan_name: "fatmawati gudang",
+                        harga: 1200000,
+                        mulai_sewa: "2022-01-01",
+                        akhir_sewa: "2022-02-01",
+                        product_name: "kulkas",
+                        address: "jl. kemerdekaan",
+                        pickup_point: "masjid agung",
+                        ongkos_kirim: 30000,
+                      }
+
+        "400":
+          description: Fail Get History Lahan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseFail"
+              examples:
+                response1:
+                  description: response fail
+                  value:
+                    { status: "failed", message: "failed get history lahan" }
+
 ####################################
 #  COMPONENTS
 ####################################
@@ -1256,7 +1272,7 @@ components:
         mulai_sewa:
           type: string
         akhir_sewa:
-          type: integer
+          type: string
         product_photo:
           type: string
         product_name:
